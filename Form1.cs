@@ -19,6 +19,9 @@ namespace MatchingGame
             "b", "b", "v", "v", "w", "w", "z", "z"
         };
 
+        Label firstClicked = null;
+        Label secondClicked = null;
+
         public Form1()
         {
             InitializeComponent();
@@ -47,6 +50,10 @@ namespace MatchingGame
 
         private void label1_Click(object sender, EventArgs e)
         {
+            if (timer1.Enabled == true)
+                return;
+
+
             Label clickedLabel = sender as Label;
 
             if (clickedLabel != null)
@@ -54,8 +61,34 @@ namespace MatchingGame
                 if (clickedLabel.ForeColor == Color.Black)
                     return;
 
-                clickedLabel.ForeColor = Color.Black;
+                //  clickedLabel.ForeColor = Color.Black;
+
+                if (firstClicked == null)
+                {
+                    firstClicked = clickedLabel;
+                    firstClicked.ForeColor = Color.Black;
+
+                    return;
+                }
+
+                secondClicked = clickedLabel;
+                secondClicked.ForeColor = Color.Black;
+
+                timer1.Start();
             }
+        }
+
+        /*  This timer started when the player clicks two icons that don't match,
+            so it counts three quarters of a second and then turns itself off and hides both icons  */
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Stop();
+
+            firstClicked.ForeColor = firstClicked.BackColor;
+            secondClicked.ForeColor = secondClicked.BackColor;
+
+            firstClicked = null;
+            secondClicked = null;
         }
     }
 }
