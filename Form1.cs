@@ -22,10 +22,15 @@ namespace MatchingGame
         Label firstClicked = null;
         Label secondClicked = null;
 
+
+        static DateTime startTime;
+        static DateTime stopTime;
         public Form1()
         {
             InitializeComponent();
             AssignIconsToSquares();
+            startTime = DateTime.Now;
+            Console.WriteLine(startTime.ToString());
         }
 
         //  Assign each icon from the list of icons to the random square
@@ -113,8 +118,25 @@ namespace MatchingGame
                 }
             }
 
-            MessageBox.Show("You matched all the icons!", "Congratulations");
-            Close();
+            stopTime = DateTime.Now;
+            Console.WriteLine(stopTime.ToString());
+
+            TimeSpan duration = stopTime - startTime;
+            double durationInMinutes = duration.TotalMinutes;
+            Console.WriteLine($"Application ran for {durationInMinutes} minutes.");
+
+            DialogResult dialogResult = MessageBox.Show
+                ($"You matched all the icons in {durationInMinutes} minutes." +
+                $"\n Do you want to play again",
+                "Congratulations you won !", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                Application.Restart();
+            }
+            else
+            {
+                Close();
+            }
         }
     }
 }
